@@ -35,15 +35,23 @@ let getData = async(url) => {
 let renderQuiz = async () => {
     let data = await getData("https://opentdb.com/api.php");
     console.log(data);
-    questionList = [];
+    let questionList = [];
     for(let i = 0; i < data.results.length; i++) {
         questionList.push(data.results[i]);
     }
+    console.log(questionList);
 
     questionList.forEach((questionObj) => {
         let {correct_answer, incorrect_answers, question, type} = questionObj
         let questionString = $("<p></p>").text(question);
-        $(".gameDiv").append(questionString);
+        let answers = [];
+        answers.push($("<button></button>").text(correct_answer));
+        for(let i = 0; i < incorrect_answers.length; i++) {
+            answers.push($("<button></button>").text(incorrect_answers[i]));
+        }
+        shuffle(answers);
+        
+        $(".gameDiv").append(questionString, answers);
     });
     
 }
@@ -51,3 +59,13 @@ let renderQuiz = async () => {
 document.querySelector("#confirmBtn").addEventListener("click",() => {
     renderQuiz();
 })
+
+//Durstenfeld shuffle
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
