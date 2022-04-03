@@ -45,13 +45,13 @@ let renderQuiz = async () => {
         let {correct_answer, incorrect_answers, question, type} = questionObj
         let questionString = $("<p></p>").text(question);
         let answers = [];
-        answers.push($("<button></button>").text(correct_answer));
+        answers.push($("<button></button>").text(correct_answer).attr("class", "correctBtn"));
         for(let i = 0; i < incorrect_answers.length; i++) {
-            answers.push($("<button></button>").text(incorrect_answers[i]));
+            answers.push($("<button></button>").text(incorrect_answers[i]).attr("class", "falseBtn"));
         }
         shuffle(answers);
         
-        let questionDiv = $("<div></div>")
+        let questionDiv = $("<div></div>").attr("id", `${questionList.indexOf(questionObj)}`);
         $(questionDiv).append(questionString, answers)
         $(".gameDiv").append(questionDiv);
     });
