@@ -33,8 +33,19 @@ let getData = async(url) => {
 }
 
 let renderQuiz = async () => {
-    let data = getData("https://opentdb.com/api.php");
+    let data = await getData("https://opentdb.com/api.php");
     console.log(data);
+    questionList = [];
+    for(let i = 0; i < data.results.length; i++) {
+        questionList.push(data.results[i]);
+    }
+
+    questionList.forEach((questionObj) => {
+        let {correct_answer, incorrect_answers, question, type} = questionObj
+        let questionString = $("<p></p>").text(question);
+        $(".gameDiv").append(questionString);
+    });
+    
 }
 
 document.querySelector("#confirmBtn").addEventListener("click",() => {
