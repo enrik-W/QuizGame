@@ -51,9 +51,10 @@ let renderQuiz = async () => {
         }
         shuffle(answers);
         
-        $(".gameDiv").append(questionString, answers);
+        let questionDiv = $("<div></div>")
+        $(questionDiv).append(questionString, answers)
+        $(".gameDiv").append(questionDiv);
     });
-    
 }
 
 document.querySelector("#confirmBtn").addEventListener("click",() => {
