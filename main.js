@@ -12,21 +12,21 @@ categories.forEach(category => {
 
 let getData = async(url) => {
     let queries = "?"
-    let numberOfQuestions = document.querySelector("#numberOfQuestions");
-    queries +=`amount=${numberOfQuestions.value}`
+    let numberOfQuestions = $("#numberOfQuestions").val();
+    queries +=`amount=${numberOfQuestions}`
 
-    let chosenCategory = document.querySelector("#categorySelector");
-    if(chosenCategory.value !== "any") {
-        queries +=`&category=${chosenCategory.value}`
+    let chosenCategory = $("#categorySelector").val();
+    if(chosenCategory !== "any") {
+        queries +=`&category=${chosenCategory}`
     }
 
-    let chosenDifficulty = document.querySelector("#difficultySelector");
-    if(chosenDifficulty.value !== "any") {
-        queries +=`&difficulty=${chosenDifficulty.value}`
+    let chosenDifficulty = $("#difficultySelector").val();
+    if(chosenDifficulty !== "any") {
+        queries +=`&difficulty=${chosenDifficulty}`
     }
 
-    let chosenType = document.querySelector("[name='type']:checked");
-    queries +=`&type=${chosenType.value}`
+    let chosenType = $("[name='type']:checked").val();
+    queries +=`&type=${chosenType}`
 
     let response = await fetch(url + queries);
     return await response.json();
@@ -50,18 +50,20 @@ let renderQuiz = async () => {
             answers.push($("<button></button>").text(incorrect_answers[i]).attr("class", "falseBtn"));
         }
         shuffle(answers);
-        
-        $(".correctBtn").click(function() {
+
+        let questionDiv = $("<div></div>");
+        $(questionDiv).append(questionString, answers)
+        $(".gameDiv").append(questionDiv);
+
+        $(".correctBtn").click((event) => {
+            $(event.target).parent().css("background-color", "green");
             correct();
         });
 
-        $(".falseBtn").click(function() {
+        $(".falseBtn").click((event) => {
+            $(event.target).parent().css("background-color", "red");
             wrong();
         })
-
-        let questionDiv = $("<div></div>").attr("id", `${questionList.indexOf(questionObj)}`);
-        $(questionDiv).append(questionString, answers)
-        $(".gameDiv").append(questionDiv);
     });
 }
 
@@ -71,7 +73,6 @@ document.querySelector("#confirmBtn").addEventListener("click",() => {
 
 function correct() {
     console.log("correct");
-    $()
 }
 
 function wrong() {
