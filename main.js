@@ -51,6 +51,14 @@ let renderQuiz = async () => {
         }
         shuffle(answers);
         
+        $(".correctBtn").click(function() {
+            correct();
+        });
+
+        $(".falseBtn").click(function() {
+            wrong();
+        })
+
         let questionDiv = $("<div></div>").attr("id", `${questionList.indexOf(questionObj)}`);
         $(questionDiv).append(questionString, answers)
         $(".gameDiv").append(questionDiv);
@@ -60,6 +68,15 @@ let renderQuiz = async () => {
 document.querySelector("#confirmBtn").addEventListener("click",() => {
     renderQuiz();
 })
+
+function correct() {
+    console.log("correct");
+    $()
+}
+
+function wrong() {
+    console.log("Wrong");
+}
 
 //Durstenfeld shuffle
 function shuffle(array) {
