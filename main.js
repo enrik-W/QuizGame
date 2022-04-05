@@ -67,10 +67,30 @@ let renderQuiz = async () => {
             scoreKeeping(resultArray, "wrong");
         })
     });
+    
+    let getResultsBtn = $("<button></button>").text("Get results");
+    $(getResultsBtn).click(() => {
+        renderResult();
+    })
+    $(".gameDiv").append(getResultsBtn);
 }
 
 let renderResult = () => {
-    let resultString = $("<p></P>").text(`Your result is: ${calculateScore(resultArray)} correct out of ${resultArray.length}.`)
+    let resultObj = calculateScore(resultArray);
+    let proportionCorrect = resultObj.numberOfCorrect;
+    let resultString = $("<p></P>").text(`Your result is: ${resultObj.numberOfCorrect} correct out of ${resultArray.length}.`);
+    let passedOrNotString = $("<p></p>")
+    if(proportionCorrect < 0.5) {
+        $(".resultDiv").css("background-color", "red");
+        $(passedOrNotString).text("Failed")
+    } else if(proportionCorrect < 0.85) {
+        $(".resultDiv").css("background-color", "yellow");
+        $(passedOrNotString).text("Passed");
+    } else {
+        $(".resultDiv").css("background-color", "green");
+        $(passedOrNotString).text("Very much passed");
+    }
+    $(".resultDiv").append(resultString, passedOrNotString);
 }
 
 $("#confirmBtn").click(() => {
@@ -88,13 +108,14 @@ function scoreKeeping(resultArray, result) {
 }
 
 function calculateScore(resultArray) {
-    let numberOfCorrect = 0;
+    let resultObj = {numberOfCorrect, proportionCorrect};
     for(let i = 0; i < resultArray.length; i++) {
         if(resultArray[i] === true) {
-            numberOfCorrect++;
+            resultObj.numberOfCorrect++;
         }
+        resultObj.proportionCorrect = resultObj.numberOfCorrect / resultArray.length;
     }
-    return numberOfCorrect;
+    return resultObj;
 }
  
 //Durstenfeld shuffle
