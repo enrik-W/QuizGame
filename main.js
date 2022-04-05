@@ -6,6 +6,7 @@ const categories = ["General Knowledge", "Entertainment: Books", "Entertainment:
 "Entertainment: Cartoon & Animation"];
 
 let resultArray = [];
+let isDarkMode = false;
 
 categories.forEach(category => {
     let option = $("<option></option/>").text(category).val(categories.indexOf(category) + 9);
@@ -45,6 +46,7 @@ let renderQuiz = async () => {
 
     questionList.forEach((questionObj) => {
         let {correct_answer, incorrect_answers, question, type} = questionObj
+        let questionNumberString = $("<p></p>").text(`Question: ${questionList.indexOf(questionObj)}`)
         let questionString = $("<p></p>").text(question);
         let answers = [];
         answers.push($("<button></button>").text(correct_answer).attr("class", "correctBtn"));
@@ -54,7 +56,7 @@ let renderQuiz = async () => {
         shuffle(answers);
 
         let questionDiv = $("<div></div>");
-        $(questionDiv).append(questionString, answers)
+        $(questionDiv).append(questionString, answers, questionNumberString)
         $(".gameDiv").append(questionDiv);
 
         $(".correctBtn").click((event) => {
@@ -67,7 +69,7 @@ let renderQuiz = async () => {
             scoreKeeping(resultArray, "wrong");
         })
     });
-    
+
     let getResultsBtn = $("<button></button>").text("Get results");
     $(getResultsBtn).click(() => {
         renderResult();
@@ -76,10 +78,12 @@ let renderQuiz = async () => {
 }
 
 let renderResult = () => {
+    $(".gameDiv").hide();
     let resultObj = calculateScore(resultArray);
     let proportionCorrect = resultObj.numberOfCorrect;
-    let resultString = $("<p></P>").text(`Your result is: ${resultObj.numberOfCorrect} correct out of ${resultArray.length}.`);
+    let resultString = $("<p></p>").text(`Your result is: ${resultObj.numberOfCorrect} correct out of ${resultArray.length}.`);
     let passedOrNotString = $("<p></p>")
+
     if(proportionCorrect < 0.5) {
         $(".resultDiv").css("background-color", "red");
         $(passedOrNotString).text("Failed")
@@ -90,12 +94,27 @@ let renderResult = () => {
         $(".resultDiv").css("background-color", "green");
         $(passedOrNotString).text("Very much passed");
     }
-    $(".resultDiv").append(resultString, passedOrNotString);
+    let playAgainBtn = $("<button></button>").text("Play again?");
+    $(playAgainBtn).click(() => {
+        $(".optionsDiv").show();
+    })
+    $(".resultDiv").append(resultString, passedOrNotString, playAgainBtn);
 }
 
 $("#confirmBtn").click(() => {
+    $(".optionsDiv").hide();
     renderQuiz();
 });
+
+$("#darkModeBtn").click(() => {
+    if(isDarkMode === false) {
+        $("body").css("background-color", "black");
+        isDarkMode = true;
+    } else {
+        $("body").css("background-color", "white");
+        isDarkMode = false;
+    }
+})
 
 function scoreKeeping(resultArray, result) {
     if(result === "correct") {
@@ -117,7 +136,7 @@ function calculateScore(resultArray) {
     }
     return resultObj;
 }
- 
+
 //Durstenfeld shuffle
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
