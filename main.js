@@ -67,18 +67,28 @@ let renderQuiz = async () => {
     });
 }
 
-document.querySelector("#confirmBtn").addEventListener("click",() => {
+$("#confirmBtn").click(() => {
     renderQuiz();
-})
+});
 
 function correct() {
     console.log("correct");
 }
 
 function wrong() {
-    console.log("Wrong");
+    console.log("wrong");
 }
 
+function scoreKeeping(resultArray = [], result) {
+    if(result === "correct") {
+        resultArray.push(true);
+    } else if (result === "wrong") {
+        resultArray.push(false);
+    } else if (result === "clear") {
+        resultArray.length = 0;
+    }
+}
+ 
 //Durstenfeld shuffle
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
