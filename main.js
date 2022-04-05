@@ -87,7 +87,7 @@ let renderResult = () => {
     if(proportionCorrect < 0.5) {
         $(".resultDiv").css("background-color", "red");
         $(passedOrNotString).text("Failed")
-    } else if(proportionCorrect < 0.85) {
+    } else if(proportionCorrect < 0.75) {
         $(".resultDiv").css("background-color", "yellow");
         $(passedOrNotString).text("Passed");
     } else {
@@ -97,12 +97,15 @@ let renderResult = () => {
     let playAgainBtn = $("<button></button>").text("Play again?");
     $(playAgainBtn).click(() => {
         $(".optionsDiv").show();
+        $(".resultDiv").hide();
+        scoreKeeping(resultArray, "clear");
     })
     $(".resultDiv").append(resultString, passedOrNotString, playAgainBtn);
 }
 
 $("#confirmBtn").click(() => {
     $(".optionsDiv").hide();
+    $(".gameDiv").show();
     renderQuiz();
 });
 
