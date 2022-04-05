@@ -5,6 +5,8 @@ const categories = ["General Knowledge", "Entertainment: Books", "Entertainment:
 "Vehicles", "Entertainment: Comics", "Science: Gadgets", "Entertainment: Japanese Anime & Manga", 
 "Entertainment: Cartoon & Animation"];
 
+let resultArray = [];
+
 categories.forEach(category => {
     let option = $("<option></option/>").text(category).val(categories.indexOf(category) + 9);
     $("#categorySelector").append(option);
@@ -57,29 +59,25 @@ let renderQuiz = async () => {
 
         $(".correctBtn").click((event) => {
             $(event.target).parent().css("background-color", "green");
-            correct();
+            scoreKeeping(resultArray, "correct");
         });
 
         $(".falseBtn").click((event) => {
             $(event.target).parent().css("background-color", "red");
-            wrong();
+            scoreKeeping(resultArray, "wrong");
         })
     });
+}
+
+let renderResult = () => {
+    let resultString = $("<p></P>").text(`Your result is: ${calculateScore(resultArray)} correct out of ${resultArray.length}.`)
 }
 
 $("#confirmBtn").click(() => {
     renderQuiz();
 });
 
-function correct() {
-    console.log("correct");
-}
-
-function wrong() {
-    console.log("wrong");
-}
-
-function scoreKeeping(resultArray = [], result) {
+function scoreKeeping(resultArray, result) {
     if(result === "correct") {
         resultArray.push(true);
     } else if (result === "wrong") {
@@ -87,6 +85,16 @@ function scoreKeeping(resultArray = [], result) {
     } else if (result === "clear") {
         resultArray.length = 0;
     }
+}
+
+function calculateScore(resultArray) {
+    let numberOfCorrect = 0;
+    for(let i = 0; i < resultArray.length; i++) {
+        if(resultArray[i] === true) {
+            numberOfCorrect++;
+        }
+    }
+    return numberOfCorrect;
 }
  
 //Durstenfeld shuffle
