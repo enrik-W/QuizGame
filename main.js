@@ -36,12 +36,10 @@ let getData = async(url) => {
 
 let renderQuiz = async () => {
     let data = await getData("https://opentdb.com/api.php");
-    console.log(data);
     let questionList = [];
     for(let i = 0; i < data.results.length; i++) {
         questionList.push(data.results[i]);
     }
-    console.log(questionList);
 
     questionList.forEach((questionObj) => {
         let {correct_answer, incorrect_answers, question, type} = questionObj
@@ -114,12 +112,10 @@ function clearArray(resultArray) {
 }
 
 function calculateScore(resultArray) {
-    console.log(resultArray);
     let resultObj = {numberOfCorrect: 0, proportionCorrect: 0.0};
     for(let i = 0; i < resultArray.length; i++) {
         if(resultArray[i] === true) {
             resultObj.numberOfCorrect++;
-            console.log(`Corrects: ${resultObj.numberOfCorrect}`);
         }
         resultObj.proportionCorrect = (resultObj.numberOfCorrect / resultArray.length);
     }
