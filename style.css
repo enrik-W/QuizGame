@@ -3,7 +3,17 @@
     border-width: 1px;
 }
 
-.dark{
+.dark {
     background-color: #222;
     color: #e6e6e6;
+}
+
+.optionsDiv {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+    transform: translate(-40%, -55%);
+    text-align: center;
 }

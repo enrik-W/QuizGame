@@ -61,6 +61,7 @@ let renderQuiz = async () => {
     $(getResultsBtn).click(() => {
         renderResult();
     })
+    
     $(".gameDiv").append(getResultsBtn);
 
     $(".correctBtn").click((event) => {
