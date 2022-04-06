@@ -46,7 +46,7 @@ let renderQuiz = async () => {
 
     questionList.forEach((questionObj) => {
         let {correct_answer, incorrect_answers, question, type} = questionObj
-        let questionNumberString = $("<p></p>").text(`Question: ${questionList.indexOf(questionObj)}`)
+        let questionNumberString = $("<p></p>").text(`Question: ${questionList.indexOf(questionObj) + 1}`);
         let questionString = $("<p></p>").text(question);
         let answers = [];
         answers.push($("<button></button>").text(correct_answer).attr("class", "correctBtn"));
@@ -56,18 +56,8 @@ let renderQuiz = async () => {
         shuffle(answers);
 
         let questionDiv = $("<div></div>");
-        $(questionDiv).append(questionString, answers, questionNumberString)
+        $(questionDiv).append(questionNumberString, questionString, answers)
         $(".gameDiv").append(questionDiv);
-
-        $(".correctBtn").click((event) => {
-            $(event.target).parent().css("background-color", "green");
-            scoreKeeping(resultArray, "correct");
-        });
-
-        $(".falseBtn").click((event) => {
-            $(event.target).parent().css("background-color", "red");
-            scoreKeeping(resultArray, "wrong");
-        })
     });
 
     let getResultsBtn = $("<button></button>").text("Get results");
@@ -75,12 +65,23 @@ let renderQuiz = async () => {
         renderResult();
     })
     $(".gameDiv").append(getResultsBtn);
+
+    $(".correctBtn").click((event) => {
+        $(event.target).parent().css("background-color", "green");
+        scoreKeeping(resultArray, "correct");
+    });
+    
+    $(".falseBtn").click((event) => {
+        $(event.target).parent().css("background-color", "red");
+        scoreKeeping(resultArray, "wrong");
+    })
 }
 
 let renderResult = () => {
     $(".gameDiv").hide();
+    $(".resultDiv").show();
     let resultObj = calculateScore(resultArray);
-    let proportionCorrect = resultObj.numberOfCorrect;
+    let proportionCorrect = resultObj.proportionCorrect;
     let resultString = $("<p></p>").text(`Your result is: ${resultObj.numberOfCorrect} correct out of ${resultArray.length}.`);
     let passedOrNotString = $("<p></p>")
 
@@ -98,7 +99,7 @@ let renderResult = () => {
     $(playAgainBtn).click(() => {
         $(".optionsDiv").show();
         $(".resultDiv").hide();
-        scoreKeeping(resultArray, "clear");
+        clearArray(resultArray);
     })
     $(".resultDiv").append(resultString, passedOrNotString, playAgainBtn);
 }
@@ -117,25 +118,27 @@ $("#darkModeBtn").click(() => {
         $("body").css("background-color", "white");
         isDarkMode = false;
     }
-})
+});
 
 function scoreKeeping(resultArray, result) {
-    if(result === "correct") {
-        resultArray.push(true);
-    } else if (result === "wrong") {
-        resultArray.push(false);
-    } else if (result === "clear") {
-        resultArray.length = 0;
-    }
+    resultArray.push(result);
+    console.log(resultArray.length);
+}
+
+function clearArray(resultArray) {
+    resultArray.length = 0;
 }
 
 function calculateScore(resultArray) {
-    let resultObj = {numberOfCorrect, proportionCorrect};
+    console.log(resultArray);
+    let resultObj = {numberOfCorrect: 0, proportionCorrect: 0.0};
     for(let i = 0; i < resultArray.length; i++) {
-        if(resultArray[i] === true) {
-            resultObj.numberOfCorrect++;
+        if(resultArray[i] === "correct") {
+            resultObj.numberOfCorrect += 1;
+            console.log(`Corrects: ${resultObj.numberOfCorrect}`);
         }
-        resultObj.proportionCorrect = resultObj.numberOfCorrect / resultArray.length;
+        resultObj.proportionCorrect = (resultObj.numberOfCorrect / resultArray.length);
+        console.log(resultArray.length);
     }
     return resultObj;
 }
