@@ -2,3 +2,8 @@
     border-style: solid;
     border-width: 1px;
 }
+
+.dark{
+    background-color: #222;
+    color: #e6e6e6;
+}

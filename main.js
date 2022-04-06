@@ -111,12 +111,12 @@ $("#confirmBtn").click(() => {
 });
 
 $("#darkModeBtn").click(() => {
-    if(isDarkMode === false) {
-        $("body").css("background-color", "black");
-        isDarkMode = true;
+    if($("body").hasClass("dark")) {
+        $("body").removeClass("dark");
+        $("#darkModeBtn").text("Dark mode OFF");
     } else {
-        $("body").css("background-color", "white");
-        isDarkMode = false;
+        $("body").addClass("dark");
+        $("#darkModeBtn").text("Dark mode ON");
     }
 });
 
