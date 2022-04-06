@@ -17,3 +17,9 @@
     transform: translate(-40%, -55%);
     text-align: center;
 }
+
+#darkModeBtn {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+}
