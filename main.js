@@ -6,7 +6,6 @@ const categories = ["General Knowledge", "Entertainment: Books", "Entertainment:
 "Entertainment: Cartoon & Animation"];
 
 let resultArray = [];
-let isDarkMode = false;
 
 categories.forEach(category => {
     let option = $("<option></option/>").text(category).val(categories.indexOf(category) + 9);
@@ -68,12 +67,12 @@ let renderQuiz = async () => {
 
     $(".correctBtn").click((event) => {
         $(event.target).parent().css("background-color", "green");
-        scoreKeeping(resultArray, "correct");
+        scoreKeeping(resultArray, true);
     });
     
     $(".falseBtn").click((event) => {
         $(event.target).parent().css("background-color", "red");
-        scoreKeeping(resultArray, "wrong");
+        scoreKeeping(resultArray, false);
     })
 }
 
@@ -98,10 +97,43 @@ let renderResult = () => {
     let playAgainBtn = $("<button></button>").text("Play again?");
     $(playAgainBtn).click(() => {
         $(".optionsDiv").show();
-        $(".resultDiv").hide();
+        $(".gameDiv").children().remove();
+        $(".resultDiv").children().remove();
+        
         clearArray(resultArray);
     })
     $(".resultDiv").append(resultString, passedOrNotString, playAgainBtn);
+}
+
+function scoreKeeping(resultArray, result) {
+    resultArray.push(result);
+}
+
+function clearArray(resultArray) {
+    resultArray.length = 0;
+}
+
+function calculateScore(resultArray) {
+    console.log(resultArray);
+    let resultObj = {numberOfCorrect: 0, proportionCorrect: 0.0};
+    for(let i = 0; i < resultArray.length; i++) {
+        if(resultArray[i] === true) {
+            resultObj.numberOfCorrect++;
+            console.log(`Corrects: ${resultObj.numberOfCorrect}`);
+        }
+        resultObj.proportionCorrect = (resultObj.numberOfCorrect / resultArray.length);
+    }
+    return resultObj;
+}
+
+//Durstenfeld shuffle
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 }
 
 $("#confirmBtn").click(() => {
@@ -119,36 +151,3 @@ $("#darkModeBtn").click(() => {
         $("#darkModeBtn").text("Dark mode ON");
     }
 });
-
-function scoreKeeping(resultArray, result) {
-    resultArray.push(result);
-    console.log(resultArray.length);
-}
-
-function clearArray(resultArray) {
-    resultArray.length = 0;
-}
-
-function calculateScore(resultArray) {
-    console.log(resultArray);
-    let resultObj = {numberOfCorrect: 0, proportionCorrect: 0.0};
-    for(let i = 0; i < resultArray.length; i++) {
-        if(resultArray[i] === "correct") {
-            resultObj.numberOfCorrect += 1;
-            console.log(`Corrects: ${resultObj.numberOfCorrect}`);
-        }
-        resultObj.proportionCorrect = (resultObj.numberOfCorrect / resultArray.length);
-        console.log(resultArray.length);
-    }
-    return resultObj;
-}
-
-//Durstenfeld shuffle
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-}
