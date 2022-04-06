@@ -64,12 +64,14 @@ let renderQuiz = async () => {
     $(".gameDiv").append(getResultsBtn);
 
     $(".correctBtn").click((event) => {
-        $(event.target).parent().css("background-color", "green");
+        let correct = $("<p></p>").text("Correct!");
+        $(event.target).parent().css("background-color", "green").append(correct);
         scoreKeeping(resultArray, true);
     });
     
     $(".falseBtn").click((event) => {
-        $(event.target).parent().css("background-color", "red");
+        let wrong = $("<p></p>").text("Wrong!");
+        $(event.target).parent().css("background-color", "red").append(wrong);
         scoreKeeping(resultArray, false);
     })
 }
