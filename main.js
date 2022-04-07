@@ -115,7 +115,8 @@ let renderResult = () => {
         $(".gameDiv").children().remove();
         $(".resultDiv").children().remove();
         
-        clearArray(resultArray);
+        clearArray(resultArray)
+        clearArray(questionList);
     })
     $(".resultDiv").append(resultString, passedOrNotString, playAgainBtn);
 }
@@ -124,8 +125,8 @@ function scoreKeeping(resultArray, result) {
     resultArray.push(result);
 }
 
-function clearArray(resultArray) {
-    resultArray.length = 0;
+function clearArray(array) {
+    array.length = 0;
 }
 
 function calculateScore(resultArray) {
