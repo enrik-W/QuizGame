@@ -1,17 +1,20 @@
-const categories = ["General Knowledge", "Entertainment: Books", "Entertainment: Film", "Entertainment: Music", 
-"Entertainment: Musicals & Theatres", "Entertainment: Television", "Entertainment: Video Games", 
-"Entertainment: Board Games", "Science & Nature", "Science: Computers", "Science: Mathematics", 
-"Mythology", "Sports", "Geopraphy", "History", "Politics", "Art", "Celebrities", "Animals", 
-"Vehicles", "Entertainment: Comics", "Science: Gadgets", "Entertainment: Japanese Anime & Manga", 
-"Entertainment: Cartoon & Animation"];
-
 let resultArray = [];
 let questionList = [];
+let numberOfQuestions = 0;
+
+let renderCategories = () => {
+    const categories = ["General Knowledge", "Entertainment: Books", "Entertainment: Film", "Entertainment: Music", 
+    "Entertainment: Musicals & Theatres", "Entertainment: Television", "Entertainment: Video Games", 
+    "Entertainment: Board Games", "Science & Nature", "Science: Computers", "Science: Mathematics", 
+    "Mythology", "Sports", "Geopraphy", "History", "Politics", "Art", "Celebrities", "Animals", 
+    "Vehicles", "Entertainment: Comics", "Science: Gadgets", "Entertainment: Japanese Anime & Manga", 
+    "Entertainment: Cartoon & Animation"];
 
 categories.forEach(category => {
     let option = $("<option></option/>").text(category).val(categories.indexOf(category) + 9);
     $("#categorySelector").append(option);
 });
+}
 
 let getData = async(url) => {
     let queries = "?"
@@ -81,6 +84,8 @@ let renderQuiz = async () => {
         $(".gameDiv").append(questionDiv);
     });
 
+    numberOfQuestions = questionList.length;
+
     let getResultsBtn = $("<button></button>").text("Get results");
     $(getResultsBtn).click(() => {
         renderResult();
@@ -107,7 +112,8 @@ let renderResult = () => {
 
     let resultObj = calculateScore(resultArray);
     let proportionCorrect = resultObj.proportionCorrect;
-    let resultString = $("<p></p>").text(`Your result is: ${resultObj.numberOfCorrect} correct out of ${questionList.length}.`);
+    let numberOfCorrect = resultObj.numberOfCorrect;
+    let resultString = $("<p></p>").text(`Your result is: ${numberOfCorrect} correct out of ${numberOfQuestions}.`);
     let passedOrNotString = $("<p></p>");
 
     if(proportionCorrect < 0.5) {
@@ -157,7 +163,7 @@ let calculateScore = (resultArray) => {
             resultObj.numberOfCorrect++;
         }
 
-        resultObj.proportionCorrect = (resultObj.numberOfCorrect / questionList.length);
+        resultObj.proportionCorrect = (resultObj.numberOfCorrect / numberOfQuestions);
     }
 
     return resultObj;
@@ -173,18 +179,23 @@ let shuffle = (array) => {
     }
 }
 
-$("#confirmBtn").click(() => {
-    $(".optionsDiv").hide();
-    $(".gameDiv").show();
-    renderQuiz();
-});
+let defineStartPageButtons = () => {
+    $("#confirmBtn").click(() => {
+        $(".optionsDiv").hide();
+        $(".gameDiv").show();
+        renderQuiz();
+    });
+    
+    $("#darkModeBtn").click(() => {
+        if($("body").hasClass("dark")) {
+            $("body").removeClass("dark");
+            $("#darkModeBtn").text("Dark mode OFF");
+        } else {
+            $("body").addClass("dark");
+            $("#darkModeBtn").text("Dark mode ON");
+        }
+    });
+}
 
-$("#darkModeBtn").click(() => {
-    if($("body").hasClass("dark")) {
-        $("body").removeClass("dark");
-        $("#darkModeBtn").text("Dark mode OFF");
-    } else {
-        $("body").addClass("dark");
-        $("#darkModeBtn").text("Dark mode ON");
-    }
-});
+renderCategories();
+defineStartPageButtons();
