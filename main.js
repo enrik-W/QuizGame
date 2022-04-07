@@ -1,6 +1,5 @@
 let resultArray = [];
 let questionList = [];
-let numberOfQuestions = 0;
 
 let renderCategories = () => {
     const categories = ["General Knowledge", "Entertainment: Books", "Entertainment: Film", "Entertainment: Music", 
@@ -85,10 +84,10 @@ let renderQuiz = async () => {
         $(".gameDiv").append(questionDiv);
     });
 
-    defineResultButton();
+    defineGetResultButton();
 }
 
-let defineResultButton = () => {
+let defineGetResultButton = () => {
     let getResultsBtn = $("<button></button>").text("Get results");
 
     $(getResultsBtn).click(() => {
@@ -107,55 +106,49 @@ let defineResultButton = () => {
         let wrong = $("<p></p>").text("Wrong!");
         $(event.target).parent().css("background-color", "red").append(wrong);
         scoreKeeping(resultArray, false);
-    })
+    });
 }
 
 let renderResult = () => {
     $(".gameDiv").hide();
-    $(".resultDiv").show();
+    let resultDiv = $("<div></div>").attr("class", "resultDiv");
+    $("body").append(resultDiv);
 
     let resultObj = calculateScore(resultArray);
     let proportionCorrect = resultObj.proportionCorrect;
     let numberOfCorrect = resultObj.numberOfCorrect;
-    numberOfQuestions = questionList.length;
-    let resultString = $("<p></p>").text(`Your result is: ${numberOfCorrect} correct out of ${numberOfQuestions}.`);
+    let resultString = $("<p></p>").text(`Your result is: ${numberOfCorrect} correct out of ${questionList.length}.`);
     let passedOrNotString = $("<p></p>");
 
     if(proportionCorrect < 0.5) {
-        $(".resultDiv").css("background-color", "red");
+        $(resultDiv).css("background-color", "red");
         $(passedOrNotString).text("Failed");
     } else if(proportionCorrect < 0.75) {
-        $(".resultDiv").css("background-color", "yellow");
-        $(".resultDiv").css("color", "black");
+        $(resultDiv).css("background-color", "yellow");
+        $(resultDiv).css("color", "black");
         $(passedOrNotString).text("Passed");
     } else {
-        $(".resultDiv").css("background-color", "green");
+        $(resultDiv).css("background-color", "green");
         $(passedOrNotString).text("Very much passed");
     }
 
-    $(".resultDiv").append(resultString, passedOrNotString);
-    definePlayAgainButton();
+    $(resultDiv).append(resultString, passedOrNotString);
+    definePlayAgainButton(resultDiv);
 }
 
-let definePlayAgainButton = () => {
+let definePlayAgainButton = (resultDiv) => {
     let playAgainBtn = $("<button></button>").text("Play again?");
 
     $(playAgainBtn).click(() => {
         $(".optionsDiv").show();
         $(".gameDiv").children().remove();
-        $(".resultDiv").children().remove();
-
-        if($("body").hasClass("dark")) {
-            $(".resultDiv").css("color", "white");
-        } else {
-            $(".resultDiv").css("color", "black");
-        }
+        $(resultDiv).remove();
         
         clearArray(resultArray);
         clearArray(questionList);
     });
 
-    $(".resultDiv").append(playAgainBtn);
+    $(resultDiv).append(playAgainBtn);
 }
 
 let scoreKeeping = (resultArray, result) => {
@@ -173,7 +166,8 @@ let calculateScore = (resultArray) => {
             resultObj.numberOfCorrect++;
         }
 
-        resultObj.proportionCorrect = (resultObj.numberOfCorrect / numberOfQuestions);
+        resultObj.proportionCorrect = (resultObj.numberOfCorrect / questionList.length);
+        console.log(resultObj.proportionCorrect);
     }
 
     return resultObj;

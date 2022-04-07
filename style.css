@@ -22,6 +22,18 @@ body {
     text-align: center;
 }
 
+.resultDiv {
+    position: absolute; 
+    width: 500px;
+    height: 400px;
+    top: 50%;
+    left: 53%;
+    margin-top: -50px;
+    margin-left: -100px;
+    transform: translate(-40%, -55%);
+    text-align: center;
+}
+
 #darkModeBtn {
     position: fixed;
     bottom: 3%;
