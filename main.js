@@ -6,6 +6,7 @@ const categories = ["General Knowledge", "Entertainment: Books", "Entertainment:
 "Entertainment: Cartoon & Animation"];
 
 let resultArray = [];
+let questionList = [];
 
 categories.forEach(category => {
     let option = $("<option></option/>").text(category).val(categories.indexOf(category) + 9);
@@ -36,7 +37,6 @@ let getData = async(url) => {
 
 let renderQuiz = async () => {
     let data = await getData("https://opentdb.com/api.php");
-    let questionList = [];
     for(let i = 0; i < data.results.length; i++) {
         questionList.push(data.results[i]);
     }
@@ -96,7 +96,7 @@ let renderResult = () => {
     $(".resultDiv").show();
     let resultObj = calculateScore(resultArray);
     let proportionCorrect = resultObj.proportionCorrect;
-    let resultString = $("<p></p>").text(`Your result is: ${resultObj.numberOfCorrect} correct out of ${resultArray.length}.`);
+    let resultString = $("<p></p>").text(`Your result is: ${resultObj.numberOfCorrect} correct out of ${questionList.length}.`);
     let passedOrNotString = $("<p></p>")
 
     if(proportionCorrect < 0.5) {
@@ -134,7 +134,7 @@ function calculateScore(resultArray) {
         if(resultArray[i] === true) {
             resultObj.numberOfCorrect++;
         }
-        resultObj.proportionCorrect = (resultObj.numberOfCorrect / resultArray.length);
+        resultObj.proportionCorrect = (resultObj.numberOfCorrect / questionList.length);
     }
     return resultObj;
 }
