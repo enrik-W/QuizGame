@@ -91,7 +91,7 @@ let renderQuiz = async () => {
     setQuizTitle();
 
     questionList.forEach((questionObj) => {
-        let {correct_answer, incorrect_answers, question, type} = questionObj;
+        let {correct_answer, incorrect_answers, question} = questionObj;
 
         let properTextObj = properText(question, correct_answer, incorrect_answers);
 
