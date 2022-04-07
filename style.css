@@ -9,7 +9,7 @@
 }
 
 body {
-    height: 3000px;
+    min-height: 100vh;
 }
 
 .optionsDiv {

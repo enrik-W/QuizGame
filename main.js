@@ -84,7 +84,7 @@ let renderQuiz = async () => {
     let getResultsBtn = $("<button></button>").text("Get results");
     $(getResultsBtn).click(() => {
         renderResult();
-    })
+    });
     
     $(".gameDiv").append(getResultsBtn);
 
@@ -104,30 +104,41 @@ let renderQuiz = async () => {
 let renderResult = () => {
     $(".gameDiv").hide();
     $(".resultDiv").show();
+
     let resultObj = calculateScore(resultArray);
     let proportionCorrect = resultObj.proportionCorrect;
     let resultString = $("<p></p>").text(`Your result is: ${resultObj.numberOfCorrect} correct out of ${questionList.length}.`);
-    let passedOrNotString = $("<p></p>")
+    let passedOrNotString = $("<p></p>");
 
     if(proportionCorrect < 0.5) {
         $(".resultDiv").css("background-color", "red");
-        $(passedOrNotString).text("Failed")
+        $(passedOrNotString).text("Failed");
     } else if(proportionCorrect < 0.75) {
         $(".resultDiv").css("background-color", "yellow");
+        $(".resultDiv").css("color", "black");
         $(passedOrNotString).text("Passed");
     } else {
         $(".resultDiv").css("background-color", "green");
         $(passedOrNotString).text("Very much passed");
     }
+
     let playAgainBtn = $("<button></button>").text("Play again?");
+
     $(playAgainBtn).click(() => {
         $(".optionsDiv").show();
         $(".gameDiv").children().remove();
         $(".resultDiv").children().remove();
+
+        if($("body").hasClass("dark")) {
+            $(".resultDiv").css("color", "white");
+        } else {
+            $(".resultDiv").css("color", "black");
+        }
         
-        clearArray(resultArray)
+        clearArray(resultArray);
         clearArray(questionList);
-    })
+    });
+
     $(".resultDiv").append(resultString, passedOrNotString, playAgainBtn);
 }
 
@@ -145,8 +156,10 @@ let calculateScore = (resultArray) => {
         if(resultArray[i] === true) {
             resultObj.numberOfCorrect++;
         }
+
         resultObj.proportionCorrect = (resultObj.numberOfCorrect / questionList.length);
     }
+
     return resultObj;
 }
 
