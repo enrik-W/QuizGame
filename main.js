@@ -82,8 +82,11 @@ let renderQuiz = async () => {
         let questionDiv = $("<div></div>");
         $(questionDiv).append(questionNumberString, questionString, answers);
         $(".gameDiv").append(questionDiv);
+        
     });
 
+    defineCorrectButton();
+    defineWrongButton();
     defineGetResultButton();
 }
 
@@ -93,15 +96,19 @@ let defineGetResultButton = () => {
     $(getResultsBtn).click(() => {
         renderResult();
     });
-    
-    $(".gameDiv").append(getResultsBtn);
 
+    $(".gameDiv").append(getResultsBtn);
+}
+    
+let defineCorrectButton = () => {
     $(".correctBtn").click((event) => {
         let correct = $("<p></p>").text("Correct!");
         $(event.target).parent().css("background-color", "green").append(correct);
         scoreKeeping(resultArray, true);
     });
-    
+}
+
+let defineWrongButton = () => {
     $(".falseBtn").click((event) => {
         let wrong = $("<p></p>").text("Wrong!");
         $(event.target).parent().css("background-color", "red").append(wrong);
