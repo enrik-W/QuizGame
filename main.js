@@ -1,5 +1,7 @@
 let resultArray = [];
 let questionList = [];
+let chosenCategory = 0;
+let chosenDifficulty = "";
 
 let renderCategories = () => {
     const categories = ["General Knowledge", "Entertainment: Books", "Entertainment: Film", "Entertainment: Music", 
@@ -20,12 +22,12 @@ let getData = async(url) => {
     let numberOfQuestions = $("#numberOfQuestions").val();
     queries +=`amount=${numberOfQuestions}`
 
-    let chosenCategory = $("#categorySelector").val();
+    chosenCategory = $("#categorySelector").val();
     if(chosenCategory !== "any") {
         queries +=`&category=${chosenCategory}`
     }
 
-    let chosenDifficulty = $("#difficultySelector").val();
+    chosenDifficulty = $("#difficultySelector").val();
     if(chosenDifficulty !== "any") {
         queries +=`&difficulty=${chosenDifficulty}`
     }
@@ -51,12 +53,42 @@ let properText = (question, correct_answer, incorrect_answers = []) => {
     return properTextObj;
 }
 
+let setQuizTitle = () => {
+    let infoString = $("<h3></h3>");
+
+    if(chosenCategory !== "any") {
+        try {
+            infoString.text(`Quiz about: ${questionList[0].category},`);
+        } catch {
+            alert("Not enough questions meeting your criterias were found!");
+        }
+       
+    } else {
+        infoString.text("Quiz about: Anything!");
+    }
+
+    if(chosenDifficulty !== "any") {
+        try {
+            infoString.append(` Difficulty ${questionList[0].difficulty}`);
+        } catch {
+            alert("Not enough questions meeting your criterias were found!");
+        }
+        
+    } else {
+        infoString.append(" Any Difficulty!")
+    }
+
+    $(".gameDiv").append(infoString);
+}
+
 let renderQuiz = async () => {
     let data = await getData("https://opentdb.com/api.php");
 
     for(let i = 0; i < data.results.length; i++) {
         questionList.push(data.results[i]);
     }
+
+    setQuizTitle();
 
     questionList.forEach((questionObj) => {
         let {correct_answer, incorrect_answers, question, type} = questionObj;
