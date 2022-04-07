@@ -10,10 +10,10 @@ let renderCategories = () => {
     "Vehicles", "Entertainment: Comics", "Science: Gadgets", "Entertainment: Japanese Anime & Manga", 
     "Entertainment: Cartoon & Animation"];
 
-categories.forEach(category => {
-    let option = $("<option></option/>").text(category).val(categories.indexOf(category) + 9);
-    $("#categorySelector").append(option);
-});
+    categories.forEach(category => {
+        let option = $("<option></option/>").text(category).val(categories.indexOf(category) + 9);
+        $("#categorySelector").append(option);
+    });
 }
 
 let getData = async(url) => {
@@ -54,6 +54,7 @@ let properText = (question, correct_answer, incorrect_answers = []) => {
 
 let renderQuiz = async () => {
     let data = await getData("https://opentdb.com/api.php");
+
     for(let i = 0; i < data.results.length; i++) {
         questionList.push(data.results[i]);
     }
@@ -84,9 +85,12 @@ let renderQuiz = async () => {
         $(".gameDiv").append(questionDiv);
     });
 
-    numberOfQuestions = questionList.length;
+    defineResultButton();
+}
 
+let defineResultButton = () => {
     let getResultsBtn = $("<button></button>").text("Get results");
+
     $(getResultsBtn).click(() => {
         renderResult();
     });
@@ -113,6 +117,7 @@ let renderResult = () => {
     let resultObj = calculateScore(resultArray);
     let proportionCorrect = resultObj.proportionCorrect;
     let numberOfCorrect = resultObj.numberOfCorrect;
+    numberOfQuestions = questionList.length;
     let resultString = $("<p></p>").text(`Your result is: ${numberOfCorrect} correct out of ${numberOfQuestions}.`);
     let passedOrNotString = $("<p></p>");
 
@@ -128,6 +133,11 @@ let renderResult = () => {
         $(passedOrNotString).text("Very much passed");
     }
 
+    $(".resultDiv").append(resultString, passedOrNotString);
+    definePlayAgainButton();
+}
+
+let definePlayAgainButton = () => {
     let playAgainBtn = $("<button></button>").text("Play again?");
 
     $(playAgainBtn).click(() => {
@@ -145,7 +155,7 @@ let renderResult = () => {
         clearArray(questionList);
     });
 
-    $(".resultDiv").append(resultString, passedOrNotString, playAgainBtn);
+    $(".resultDiv").append(playAgainBtn);
 }
 
 let scoreKeeping = (resultArray, result) => {
@@ -179,13 +189,15 @@ let shuffle = (array) => {
     }
 }
 
-let defineStartPageButtons = () => {
+let defineConfirmButton = () => {
     $("#confirmBtn").click(() => {
         $(".optionsDiv").hide();
         $(".gameDiv").show();
         renderQuiz();
     });
-    
+}
+
+let defineDarkModeButton = () => {
     $("#darkModeBtn").click(() => {
         if($("body").hasClass("dark")) {
             $("body").removeClass("dark");
@@ -198,4 +210,5 @@ let defineStartPageButtons = () => {
 }
 
 renderCategories();
-defineStartPageButtons();
+defineConfirmButton();
+defineDarkModeButton();
