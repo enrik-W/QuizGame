@@ -43,6 +43,20 @@ let renderQuiz = async () => {
 
     questionList.forEach((questionObj) => {
         let {correct_answer, incorrect_answers, question, type} = questionObj
+
+        let createArea = $("<textarea></textarea>").html(question).text();
+        let createAreaCAns = $("<textarea></textarea>").html(correct_answer).text();
+        let createAreaAns = []
+        
+        for(let i = 0; i < incorrect_answers.length; i++) {
+            createAreaAns.push($("<textarea></textarea>").html(incorrect_answers[i]).text());
+        }
+
+        console.log(createAreaAns);
+        question = createArea;
+        correct_answer = createAreaCAns;
+        incorrect_answers = createAreaAns;
+        
         let questionNumberString = $("<p></p>").text(`Question: ${questionList.indexOf(questionObj) + 1}`);
         let questionString = $("<p></p>").text(question);
         let answers = [];
@@ -53,7 +67,7 @@ let renderQuiz = async () => {
         shuffle(answers);
 
         let questionDiv = $("<div></div>");
-        $(questionDiv).append(questionNumberString, questionString, answers)
+        $(questionDiv).append(questionNumberString, questionString, answers);
         $(".gameDiv").append(questionDiv);
     });
 

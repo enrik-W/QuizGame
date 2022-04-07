@@ -4,12 +4,16 @@
 }
 
 .dark {
-    background-color: #222;
-    color: #e6e6e6;
+    background-color: black;
+    color: white;
+}
+
+body {
+    height: 2000px;
 }
 
 .optionsDiv {
-    position: absolute;
+    position: absolute; 
     top: 50%;
     left: 50%;
     margin-top: -50px;
@@ -21,5 +25,5 @@
 #darkModeBtn {
     position: fixed;
     top: 0%;
-    left: 0%;
+    right: 0%;
 }
