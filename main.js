@@ -35,6 +35,20 @@ let getData = async(url) => {
     return await response.json();
 }
 
+let makeProperText = (question, correct_answer, incorrect_answers = []) => {
+    let properTextObj = {questionText: "", correctAnswerText: "", incorrectAnswersText: []}
+
+    properTextObj.questionText = $("<textarea></textarea>").html(question).text();
+    properTextObj.correctAnswerText = $("<textarea></textarea>").html(correct_answer).text();
+    properTextObj.incorrectAnswersText = [];
+        
+        for(let i = 0; i < incorrect_answers.length; i++) {
+            properTextObj.incorrectAnswersText.push($("<textarea></textarea>").html(incorrect_answers[i]).text());
+        }
+
+    return properTextObj;
+}
+
 let renderQuiz = async () => {
     let data = await getData("https://opentdb.com/api.php");
     for(let i = 0; i < data.results.length; i++) {
@@ -42,28 +56,24 @@ let renderQuiz = async () => {
     }
 
     questionList.forEach((questionObj) => {
-        let {correct_answer, incorrect_answers, question, type} = questionObj
+        let {correct_answer, incorrect_answers, question, type} = questionObj;
 
-        let createArea = $("<textarea></textarea>").html(question).text();
-        let createAreaCAns = $("<textarea></textarea>").html(correct_answer).text();
-        let createAreaAns = []
-        
-        for(let i = 0; i < incorrect_answers.length; i++) {
-            createAreaAns.push($("<textarea></textarea>").html(incorrect_answers[i]).text());
-        }
+        let properTextObj = makeProperText(question, correct_answer, incorrect_answers);
 
-        console.log(createAreaAns);
-        question = createArea;
-        correct_answer = createAreaCAns;
-        incorrect_answers = createAreaAns;
+        question = properTextObj.questionText;
+        correct_answer = properTextObj.correctAnswerText;
+        incorrect_answers = properTextObj.incorrectAnswersText;
         
         let questionNumberString = $("<p></p>").text(`Question: ${questionList.indexOf(questionObj) + 1}`);
         let questionString = $("<p></p>").text(question);
         let answers = [];
+
         answers.push($("<button></button>").text(correct_answer).attr("class", "correctBtn"));
+
         for(let i = 0; i < incorrect_answers.length; i++) {
             answers.push($("<button></button>").text(incorrect_answers[i]).attr("class", "falseBtn"));
         }
+
         shuffle(answers);
 
         let questionDiv = $("<div></div>");
@@ -121,15 +131,15 @@ let renderResult = () => {
     $(".resultDiv").append(resultString, passedOrNotString, playAgainBtn);
 }
 
-function scoreKeeping(resultArray, result) {
+let scoreKeeping = (resultArray, result) => {
     resultArray.push(result);
 }
 
-function clearArray(array) {
+let clearArray = (array) => {
     array.length = 0;
 }
 
-function calculateScore(resultArray) {
+let calculateScore = (resultArray) => {
     let resultObj = {numberOfCorrect: 0, proportionCorrect: 0.0};
     for(let i = 0; i < resultArray.length; i++) {
         if(resultArray[i] === true) {
@@ -141,7 +151,7 @@ function calculateScore(resultArray) {
 }
 
 //Durstenfeld shuffle
-function shuffle(array) {
+let shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
         let temp = array[i];
