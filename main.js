@@ -35,7 +35,7 @@ let getData = async(url) => {
     return await response.json();
 }
 
-let makeProperText = (question, correct_answer, incorrect_answers = []) => {
+let properText = (question, correct_answer, incorrect_answers = []) => {
     let properTextObj = {questionText: "", correctAnswerText: "", incorrectAnswersText: []}
 
     properTextObj.questionText = $("<textarea></textarea>").html(question).text();
@@ -58,7 +58,7 @@ let renderQuiz = async () => {
     questionList.forEach((questionObj) => {
         let {correct_answer, incorrect_answers, question, type} = questionObj;
 
-        let properTextObj = makeProperText(question, correct_answer, incorrect_answers);
+        let properTextObj = properText(question, correct_answer, incorrect_answers);
 
         question = properTextObj.questionText;
         correct_answer = properTextObj.correctAnswerText;
