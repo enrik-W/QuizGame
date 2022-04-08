@@ -61,6 +61,7 @@ let setQuizTitle = () => {
             infoString.text(`Quiz about: ${questionList[0].category},`);
         } catch {
             alert("Not enough questions meeting your criterias were found!");
+            renderResult();
         }
        
     } else {
@@ -72,13 +73,14 @@ let setQuizTitle = () => {
             infoString.append(` Difficulty ${questionList[0].difficulty}`);
         } catch {
             alert("Not enough questions meeting your criterias were found!");
+            renderResult();
         }
         
     } else {
         infoString.append(" Any Difficulty!")
     }
 
-    $(".gameDiv").append(infoString);
+    $(".gameDiv").before(infoString);
 }
 
 let renderQuiz = async () => {
@@ -87,8 +89,6 @@ let renderQuiz = async () => {
     for(let i = 0; i < data.results.length; i++) {
         questionList.push(data.results[i]);
     }
-
-    setQuizTitle();
 
     questionList.forEach((questionObj) => {
         let {correct_answer, incorrect_answers, question} = questionObj;
@@ -117,6 +117,7 @@ let renderQuiz = async () => {
         
     });
 
+    setQuizTitle();
     defineCorrectButton();
     defineWrongButton();
     defineGetResultButton();
@@ -224,9 +225,13 @@ let shuffle = (array) => {
 
 let defineConfirmButton = () => {
     $("#confirmBtn").click(() => {
-        $(".optionsDiv").hide();
-        $(".gameDiv").show();
-        renderQuiz();
+        if($("#numberOfQuestions").val() > 50 || $("#numberOfQuestions").val() < 1) {
+            alert("You can only have between 1 and 50 questions");
+        } else {
+            $(".optionsDiv").hide();
+            $(".gameDiv").show();
+            renderQuiz();
+        }
     });
 }
 
