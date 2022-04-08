@@ -62,7 +62,6 @@ let setQuizTitle = () => {
             infoString.text(`Quiz about: ${questionList[0].category},`);
         } catch {
             alert("Not enough questions meeting your criterias were found!");
-            renderResult();
         }
        
     } else {
@@ -71,17 +70,15 @@ let setQuizTitle = () => {
 
     if(chosenDifficulty !== "any") {
         try {
-            infoString.append(` Difficulty ${questionList[0].difficulty}`);
+            infoString.append(` Difficulty: ${questionList[0].difficulty}`);
         } catch {
             alert("Not enough questions meeting your criterias were found!");
-            renderResult();
         }
         
     } else {
-        infoString.append(" Any Difficulty!")
+        infoString.append(" Any Difficulty!");
     }
 
-    $(".gameDiv").before(infoString);
 }
 
 let renderQuiz = async () => {
@@ -122,13 +119,13 @@ let renderQuiz = async () => {
     defineCorrectButton();
     defineWrongButton();
     defineGetResultButton();
+    $(".gameDiv").before(infoString);
 }
 
 let defineGetResultButton = () => {
     let getResultsBtn = $("<button></button>").text("Get results");
 
     $(getResultsBtn).click(() => {
-        $(infoString.remove());
         renderResult();
     });
 
@@ -179,6 +176,7 @@ let renderResult = () => {
 }
 
 let definePlayAgainButton = (resultDiv) => {
+    $(infoString).remove();
     let playAgainBtn = $("<button></button>").text("Play again?");
 
     $(playAgainBtn).click(() => {
