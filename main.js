@@ -1,7 +1,7 @@
 let resultArray = [];
 let questionList = [];
-let chosenCategory = 0;
-let chosenDifficulty = "";
+let chosenCategory;
+let chosenDifficulty;
 let infoString;
 
 let renderCategories = () => {
