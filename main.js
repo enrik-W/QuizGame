@@ -2,6 +2,7 @@ let resultArray = [];
 let questionList = [];
 let chosenCategory = 0;
 let chosenDifficulty = "";
+let infoString;
 
 let renderCategories = () => {
     const categories = ["General Knowledge", "Entertainment: Books", "Entertainment: Film", "Entertainment: Music", 
@@ -54,7 +55,7 @@ let properText = (question, correct_answer, incorrect_answers = []) => {
 }
 
 let setQuizTitle = () => {
-    let infoString = $("<h3></h3>");
+    infoString = $("<h3></h3>");
 
     if(chosenCategory !== "any") {
         try {
@@ -127,6 +128,7 @@ let defineGetResultButton = () => {
     let getResultsBtn = $("<button></button>").text("Get results");
 
     $(getResultsBtn).click(() => {
+        $(infoString.remove());
         renderResult();
     });
 
