@@ -55,7 +55,7 @@ let properText = (question, correct_answer, incorrect_answers = []) => {
 }
 
 let setQuizTitle = () => {
-    infoString = $("<h3></h3>");
+    infoString = $("<h2></h2>");
 
     if(chosenCategory !== "any") {
         try {
@@ -119,6 +119,7 @@ let renderQuiz = async () => {
     defineCorrectButton();
     defineWrongButton();
     defineGetResultButton();
+    $(infoString).css("text-align", "center");
     $(".gameDiv").before(infoString);
 }
 

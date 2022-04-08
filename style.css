@@ -34,6 +34,10 @@ body {
     text-align: center;
 }
 
+.gameDiv {
+    text-align: center;
+}
+
 #darkModeBtn {
     position: fixed;
     bottom: 3%;
