@@ -137,6 +137,8 @@ let defineCorrectButton = () => {
     $(".correctBtn").click((event) => {
         let correct = $("<p></p>").text("Correct!");
         $(event.target).parent().css("background-color", "green").append(correct);
+        $(event.target).prop("disabled",true);
+        $(event.target).siblings().prop("disabled",true);
         scoreKeeping(resultArray, true);
     });
 }
@@ -145,6 +147,8 @@ let defineWrongButton = () => {
     $(".falseBtn").click((event) => {
         let wrong = $("<p></p>").text("Wrong!");
         $(event.target).parent().css("background-color", "red").append(wrong);
+        $(event.target).prop("disabled",true);
+        $(event.target).siblings().prop("disabled",true);
         scoreKeeping(resultArray, false);
     });
 }
