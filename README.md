@@ -1,2 +1,2 @@
-# Projektarbete-Quiz
+# QuizGame
 Henrik Wallerman 
